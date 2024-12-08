@@ -14,11 +14,41 @@
         {% for question in questions %}
         <div class="question">
             <h3>{{ loop.index }}. {{ question.question }}</h3>
-            {% for j, option in enumerate(question.options) %}
-            <label>
-                <input type="radio" name="q{{ loop.index0 }}" value="{{ j }}"> {{ option }}
-            </label><br>
-            {% endfor %}
+
+            <!-- Обработка вопросов типа "multiple_choice" -->
+            {% if question.type == "multiple_choice" %}
+                {% for j, option in enumerate(question.options) %}
+                <label>
+                    <input type="radio" name="q{{ loop.index0 }}" value="{{ j }}"> {{ option }}
+                </label><br>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Обработка вопросов типа "matching" -->
+            {% if question.type == "matching" %}
+                <div class="matching-question">
+                    <p>Сопоставьте следующие пары:</p>
+                    <table>
+                        <tr>
+                            <th>Ключ</th>
+                            <th>Выберите соответствие</th>
+                        </tr>
+                        {% for key, value in question.pairs.items() %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>
+                                <select name="q{{ loop.index0 }}_{{ loop.index }}">
+                                    <option value="">Выберите...</option>
+                                    {% for option in question.pairs.values() %}
+                                    <option value="{{ option }}">{{ option }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
         </div>
         {% endfor %}
         <button type="submit">Отправить</button>
