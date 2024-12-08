@@ -1,14 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
     let timerElement = document.getElementById("timer");
-    let timeLeft = parseInt(timerElement.textContent.split(" ")[2]); // Получаем время
+    let totalTime = parseInt(timerElement.textContent.match(/\d+/)[0]);
 
     const interval = setInterval(() => {
-        timeLeft--;
-        timerElement.textContent = `Осталось времени: ${timeLeft} секунд`;
+        totalTime--;
+        timerElement.textContent = `Осталось времени: ${totalTime} секунд`;
 
-        if (timeLeft <= 0) {
+        if (totalTime <= 10) {
+            timerElement.style.color = "red"; // Таймер становится красным
+        }
+
+        if (totalTime <= 0) {
             clearInterval(interval);
-            document.getElementById("quizForm").submit(); // Отправляем форму
+            document.getElementById("quizForm").submit();
         }
     }, 1000);
 });
