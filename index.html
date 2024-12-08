@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест по правилам Эйнштейна</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/timer.js" defer></script>
+</head>
+<body>
+    <h1>Тест по правилам Альберта Эйнштейна</h1>
+    <div id="timer">Осталось времени: {{ total_time }} секунд</div>
+    <form action="/submit" method="post" id="quizForm">
+        {% for i, question in enumerate(questions) %}
+        <div class="question">
+            <h3>{{ i+1 }}. {{ question.question }}</h3>
+            {% for j, option in enumerate(question.options) %}
+            <label>
+                <input type="radio" name="q{{ i }}" value="{{ j }}"> {{ option }}
+            </label><br>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="submit">Отправить</button>
+    </form>
+</body>
+</html>
