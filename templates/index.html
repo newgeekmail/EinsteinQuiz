@@ -7,6 +7,7 @@
     <script src="/static/timer.js" defer></script>
 </head>
 <body>
+    <h1>Привет, {{ user_data.name }}!</h1>
     <h1>Тест по правилам Альберта Эйнштейна</h1>
     <div id="timer">Осталось времени: {{ total_time }} секунд</div>
     <form action="/submit" method="post" id="quizForm">
