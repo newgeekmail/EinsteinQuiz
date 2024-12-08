@@ -26,28 +26,29 @@
             
             <!-- Обработка вопросов типа "matching" -->
             {% if question.type == "matching" %}
-            <div class="matching-question">
-                <p>Сопоставьте следующие пары:</p>
-                <table>
-                    <tr>
-                        <th>Ключ</th>
-                        <th>Выберите соответствие</th>
-                    </tr>
-                    {% for key, value in question.pairs.items() %}
-                    <tr>
-                        <td>{{ key }}</td>
-                        <td>
-                            <select name="q{{ loop.index0 }}_{{ loop.index }}">
-                                <option value="">Выберите...</option>
-                                {% for option in question.pairs.values() %}
-                                <option value="{{ option }}">{{ option }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+                <div class="matching-question">
+                    <p>{{ question.question }}</p>
+                    <table>
+                        <tr>
+                            <th>Ключ</th>
+                            <th>Выберите соответствие</th>
+                        </tr>
+                        {% for key, value in question.pairs.items() %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>
+                                <!-- Уникальное имя для каждого элемента -->
+                                <select name="q{{ loop.parentloop.index0 }}_{{ loop.index0 }}">
+                                    <option value="">Выберите...</option>
+                                    {% for option in question.pairs.values() %}
+                                    <option value="{{ option }}">{{ option }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             {% endif %}
         </div>
         {% endfor %}
