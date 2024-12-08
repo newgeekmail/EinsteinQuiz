@@ -11,7 +11,7 @@
     <h1>Тест по правилам Альберта Эйнштейна</h1>
     <div id="timer">Осталось времени: {{ total_time }} секунд</div>
     <form action="/submit" method="post" id="quizForm">
-        {% for question in questions %}
+        {% for i, question in enumerate(questions) %}
         <div class="question">
             <h3>{{ loop.index }}. {{ question.question }}</h3>
 
