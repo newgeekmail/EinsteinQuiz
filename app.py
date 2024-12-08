@@ -2,6 +2,15 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return render_template(
+        "index.html",
+        questions=questions,
+        total_time=60,
+        enumerate=enumerate  # Передаём enumerate в шаблон
+    )
+
 # Вопросы и ответы
 questions = [
     {
