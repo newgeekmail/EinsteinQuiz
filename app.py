@@ -355,9 +355,9 @@ def home():
             "index.html",
             questions=questions,  # Список вопросов
             user_data=user_data,  # Имя пользователя
-            total_time=60         # Время для таймера
-        )    
-        except Exception as e:
+            total_time=600         # Время для таймера
+        )
+    except Exception as e:
         print(f"Ошибка на маршруте /test: {e}")
         return "Произошла ошибка на сервере. Пожалуйста, попробуйте позже.", 500
 
