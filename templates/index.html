@@ -11,12 +11,12 @@
     <h1>Тест по правилам Альберта Эйнштейна</h1>
     <div id="timer">Осталось времени: {{ total_time }} секунд</div>
     <form action="/submit" method="post" id="quizForm">
-        {% for i, question in enumerate(questions) %}
+        {% for question in questions %}
         <div class="question">
-            <h3>{{ i+1 }}. {{ question.question }}</h3>
+            <h3>{{ loop.index }}. {{ question.question }}</h3>
             {% for j, option in enumerate(question.options) %}
             <label>
-                <input type="radio" name="q{{ i }}" value="{{ j }}"> {{ option }}
+                <input type="radio" name="q{{ loop.index0 }}" value="{{ j }}"> {{ option }}
             </label><br>
             {% endfor %}
         </div>
