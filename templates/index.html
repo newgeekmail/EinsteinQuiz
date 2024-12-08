@@ -23,7 +23,7 @@
                 </div>
                 {% for j, option in enumerate(question.options) %}
                 <label>
-                    <input type="radio" name="q{{ loop.index0 }}" value="{{ j }}"> {{ option }}
+                    <input type="radio" name="q{{ loop.index }}" value="{{ j }}"> {{ option }}
                 </label><br>
                 {% endfor %}
             {% endif %}
