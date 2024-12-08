@@ -349,7 +349,7 @@ def start():
 
 @app.route("/test")
 def home():
-    return render_template("index.html", questions=questions)
+    return render_template("index.html", questions=questions, user_data=user_data)
 
 @app.route("/submit", methods=["POST"])
 def submit():
