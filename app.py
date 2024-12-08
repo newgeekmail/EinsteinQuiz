@@ -364,34 +364,50 @@ def home():
 
 @app.route("/submit", methods=["POST"])
 def submit():
-    answers = request.form
-    score = 0
-    feedback = []
-    incorrect_answers = []
+    try:
+        answers = request.form
+        print(f"Отладка: получены ответы - {answers}")
 
-    for i, question in enumerate(questions):
-        if question["type"] == "multiple_choice":
-            user_answer = int(answers.get(f"q{i}", -1))
-            if user_answer == question["correct"]:
-                score += 1
-            else:
-                incorrect_answers.append({
+        score = 0
+        feedback = []
+        incorrect_answers = []
+
+        for i, question in enumerate(questions):
+            if question["type"] == "multiple_choice":
+                # Попробуем получить ответ и обработать возможные ошибки
+                try:
+                    user_answer = int(answers.get(f"q{i}", -1))
+                    if user_answer == question["correct"]:
+                        score += 1
+                    else:
+                        incorrect_answers.append({
+                            "question": question["question"],
+                            "your_answer": question["options"][user_answer] if user_answer != -1 else "Не отвечено",
+                            "correct_answer": question["options"][question["correct"]]
+                        })
+                except ValueError:
+                    incorrect_answers.append({
+                        "question": question["question"],
+                        "your_answer": "Неверный формат",
+                        "correct_answer": question["options"][question["correct"]]
+                    })
+
+                feedback.append({
                     "question": question["question"],
-                    "your_answer": question["options"][user_answer] if user_answer != -1 else "Не отвечено",
-                    "correct_answer": question["options"][question["correct"]]
+                    "correct": question["options"][question["correct"]],
+                    "explanation": question["explanation"]
                 })
-            feedback.append({
-                "question": question["question"],
-                "correct": question["options"][question["correct"]],
-                "explanation": question["explanation"]
-            })
 
-    # Логирование результатов
-    logging.info(
-        f"Имя: {user_data['name']}, Итог: {score}/{len(questions)}, Неправильные ответы: {len(incorrect_answers)}, Детали: {incorrect_answers}"
-    )
+        # Логирование результатов
+        logging.info(
+            f"Имя: {user_data['name']}, Итог: {score}/{len(questions)}, Неправильные ответы: {len(incorrect_answers)}, Детали: {incorrect_answers}"
+        )
 
-    return render_template("result.html", score=score, total=len(questions), feedback=feedback, incorrect_answers=incorrect_answers)
+        return render_template("result.html", score=score, total=len(questions), feedback=feedback, incorrect_answers=incorrect_answers)
+
+    except Exception as e:
+        print(f"Ошибка на маршруте /submit: {e}")
+        return "Произошла ошибка на сервере. Пожалуйста, попробуйте позже.", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
