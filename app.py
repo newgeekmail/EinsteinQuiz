@@ -403,8 +403,14 @@ def submit():
             f"Имя: {user_data['name']}, Итог: {score}/{len(questions)}, Неправильные ответы: {len(incorrect_answers)}, Детали: {incorrect_answers}"
         )
 
-        return render_template("result.html", score=score, total=len(questions), feedback=feedback, incorrect_answers=incorrect_answers)
-
+        return render_template(
+            "result.html",
+            user_data=user_data,  # Имя пользователя
+            score=score,          # Итоговый балл
+            total=len(questions), # Общее количество вопросов
+            incorrect_answers=incorrect_answers,  # Список неправильных ответов
+            feedback=feedback     # Список обратной связи
+        )
     except Exception as e:
         print(f"Ошибка на маршруте /submit: {e}")
         return "Произошла ошибка на сервере. Пожалуйста, попробуйте позже.", 500
