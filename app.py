@@ -2,6 +2,14 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+# Настройка логирования
+logging.basicConfig(
+    filename="test_results.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
 questions = [
     # Множественный выбор (Multiple Choice)
     {
@@ -321,11 +329,23 @@ questions = [
         "Нестандартная ситуация": "Используй воображение",
         "Долгая задача": "Будь настойчив"
     }
-    }
-    # Добавьте ещё 14 вопросов на сопоставление здесь
+    },    # Добавьте ещё 14 вопросов на сопоставление здесь
 ]
 
-@app.route("/")
+# Хранилище для имени пользователя
+user_data = {"name": ""}
+
+@app.route("/", methods=["GET", "POST"])
+def start():
+    if request.method == "POST":
+        name = request.form.get("name")
+        if not name:
+            return render_template("start.html", error="Введите ваше имя.")
+        user_data["name"] = name
+        return redirect(url_for("home"))
+    return render_template("start.html")
+
+@app.route("/test")
 def home():
     return render_template("index.html", questions=questions)
 
@@ -334,29 +354,31 @@ def submit():
     answers = request.form
     score = 0
     feedback = []
+    incorrect_answers = []
 
     for i, question in enumerate(questions):
         if question["type"] == "multiple_choice":
             user_answer = int(answers.get(f"q{i}", -1))
             if user_answer == question["correct"]:
                 score += 1
+            else:
+                incorrect_answers.append({
+                    "question": question["question"],
+                    "your_answer": question["options"][user_answer] if user_answer != -1 else "Не отвечено",
+                    "correct_answer": question["options"][question["correct"]]
+                })
             feedback.append({
                 "question": question["question"],
                 "correct": question["options"][question["correct"]],
                 "explanation": question["explanation"]
             })
-        elif question["type"] == "matching":
-            user_pairs = {key: answers.get(key) for key in question["pairs"].keys()}
-            correct_pairs = question["correct"]
-            if user_pairs == correct_pairs:
-                score += 1
-            feedback.append({
-                "question": question["question"],
-                "correct": correct_pairs,
-                "explanation": "Сопоставления помогают развить критическое мышление."
-            })
 
-    return render_template("result.html", score=score, total=len(questions), feedback=feedback)
+    # Логирование результатов
+    logging.info(
+        f"Имя: {user_data['name']}, Итог: {score}/{len(questions)}, Неправильные ответы: {len(incorrect_answers)}, Детали: {incorrect_answers}"
+    )
+
+    return render_template("result.html", score=score, total=len(questions), feedback=feedback, incorrect_answers=incorrect_answers)
 
 if __name__ == "__main__":
     app.run(debug=True)
