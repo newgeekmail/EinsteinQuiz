@@ -374,7 +374,6 @@ def submit():
 
         for i, question in enumerate(questions):
             if question["type"] == "multiple_choice":
-                # Попробуем получить ответ и обработать возможные ошибки
                 try:
                     user_answer = int(answers.get(f"q{i}", -1))
                     if user_answer == question["correct"]:
@@ -396,6 +395,27 @@ def submit():
                     "question": question["question"],
                     "correct": question["options"][question["correct"]],
                     "explanation": question["explanation"]
+                })
+
+            elif question["type"] == "matching":
+                # Обработка matching вопросов
+                matching_correct = True
+                for idx, (key, correct_value) in enumerate(question["correct"].items()):
+                    user_value = answers.get(f"q{i}_{idx + 1}", "")
+                    if user_value != correct_value:
+                        matching_correct = False
+                        incorrect_answers.append({
+                            "question": f"Сопоставление: {key}",
+                            "your_answer": user_value,
+                            "correct_answer": correct_value
+                        })
+                if matching_correct:
+                    score += 1
+
+                feedback.append({
+                    "question": question["question"],
+                    "correct": ", ".join([f"{k} → {v}" for k, v in question["correct"].items()]),
+                    "explanation": "Правильное сопоставление всех пар."
                 })
 
         # Логирование результатов
