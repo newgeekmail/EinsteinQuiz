@@ -351,8 +351,13 @@ def start():
 def home():
     try:
         print(f"Отладка: user_data = {user_data}, questions = {len(questions)}")
-        return render_template("index.html", questions=questions, user_data=user_data)
-    except Exception as e:
+        return render_template(
+            "index.html",
+            questions=questions,  # Список вопросов
+            user_data=user_data,  # Имя пользователя
+            total_time=60         # Время для таймера
+        )    
+        except Exception as e:
         print(f"Ошибка на маршруте /test: {e}")
         return "Произошла ошибка на сервере. Пожалуйста, попробуйте позже.", 500
 
