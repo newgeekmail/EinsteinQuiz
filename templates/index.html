@@ -17,6 +17,10 @@
 
             <!-- Обработка вопросов типа "multiple_choice" -->
             {% if question.type == "multiple_choice" %}
+                <div>
+                    <!-- Добавим отладочный вывод -->
+                    <p>DEBUG: Группа name="q{{ loop.index }}"</p>
+                </div>
                 {% for j, option in enumerate(question.options) %}
                 <label>
                     <input type="radio" name="q{{ loop.index0 }}" value="{{ j }}"> {{ option }}
