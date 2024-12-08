@@ -397,20 +397,18 @@ def submit():
                     "explanation": question["explanation"]
                 })
 
-            elif question["type"] == "matching":
-                # Обработка matching вопросов
-                matching_correct = True
-                for idx, (key, correct_value) in enumerate(question["correct"].items()):
-                    user_value = answers.get(f"q{i}_{idx + 1}", "")
-                    if user_value != correct_value:
-                        matching_correct = False
-                        incorrect_answers.append({
-                            "question": f"Сопоставление: {key}",
-                            "your_answer": user_value,
-                            "correct_answer": correct_value
-                        })
-                if matching_correct:
-                    score += 1
+                 if question["type"] == "matching":
+                    for j, (key, correct_value) in enumerate(question["pairs"].items()):
+                        # Получаем ответ пользователя
+                        user_answer = answers.get(f"q{i}_{j}", "")  # i - индекс вопроса, j - индекс пары
+                        if user_answer == correct_value:
+                            score += 1  # Увеличиваем балл, если ответ правильный
+                        else:
+                            incorrect_answers.append({
+                                "question": f"Сопоставьте: {key}",
+                                "your_answer": user_answer or "Не выбрано",
+                                "correct_answer": correct_value
+                            })
 
                 feedback.append({
                     "question": question["question"],
