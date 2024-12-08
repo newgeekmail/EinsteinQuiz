@@ -1,17 +1,99 @@
+/* Основные настройки */
 body {
     font-family: Arial, sans-serif;
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 600px;
-    text-align: center;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
+/* Заголовки */
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin: 20px 0;
+}
+
+/* Контейнер для теста */
+#quizForm {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Таймер */
 #timer {
-    font-size: 20px;
-    color: red;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #d9534f;
     margin-bottom: 20px;
 }
 
+/* Вопросы */
 .question {
     margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.question h3 {
+    margin-bottom: 10px;
+    color: #007BFF;
+}
+
+/* Радиокнопки */
+label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* Кнопка отправки */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Сопоставление */
+.matching-question table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.matching-question th, .matching-question td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.matching-question th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.matching-question select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
