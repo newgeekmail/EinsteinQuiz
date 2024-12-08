@@ -2,16 +2,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return render_template(
-        "index.html",
-        questions=questions,
-        total_time=60,
-        enumerate=enumerate  # Передаём enumerate в шаблон
-    )
-
-# Вопросы и ответы
+# Вопросы для теста
 questions = [
     {
         "question": "Какое из следующих утверждений соответствует правилу 'Следуй своей любознательности'?",
@@ -35,7 +26,12 @@ questions = [
 
 @app.route("/")
 def home():
-    return render_template("index.html", questions=questions, total_time=60)  # 60 секунд на тест
+    return render_template(
+        "index.html",
+        questions=questions,
+        total_time=60,
+        enumerate=enumerate  # Передаём enumerate в шаблон
+    )
 
 @app.route("/submit", methods=["POST"])
 def submit():
@@ -44,7 +40,11 @@ def submit():
     for i, question in enumerate(questions):
         if int(answers.get(f"q{i}", -1)) == question["correct"]:
             score += 1
-    return render_template("result.html", score=score, total=len(questions))
+    return render_template(
+        "result.html",
+        score=score,
+        total=len(questions)
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
