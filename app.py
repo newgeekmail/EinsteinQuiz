@@ -349,7 +349,6 @@ def start():
 
 @app.route("/test")
 def home():
-//    return render_template("index.html", questions=questions, user_data=user_data)
     try:
         print(f"Отладка: user_data = {user_data}, questions = {len(questions)}")
         return render_template("index.html", questions=questions, user_data=user_data)
