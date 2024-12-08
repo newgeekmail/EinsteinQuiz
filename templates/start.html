@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Начало теста</title>
+</head>
+<body>
+    <h1>Добро пожаловать на тест</h1>
+    <form method="post" action="/">
+        <label for="name">Введите ваше имя:</label>
+        <input type="text" id="name" name="name" required>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <button type="submit">Начать тест</button>
+    </form>
+</body>
+</html>
