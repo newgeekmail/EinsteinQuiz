@@ -349,7 +349,13 @@ def start():
 
 @app.route("/test")
 def home():
-    return render_template("index.html", questions=questions, user_data=user_data)
+//    return render_template("index.html", questions=questions, user_data=user_data)
+    try:
+        print(f"Отладка: user_data = {user_data}, questions = {len(questions)}")
+        return render_template("index.html", questions=questions, user_data=user_data)
+    except Exception as e:
+        print(f"Ошибка на маршруте /test: {e}")
+        return "Произошла ошибка на сервере. Пожалуйста, попробуйте позже.", 500
 
 @app.route("/submit", methods=["POST"])
 def submit():
