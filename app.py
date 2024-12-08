@@ -397,24 +397,18 @@ def submit():
                     "explanation": question["explanation"]
                 })
 
-                 if question["type"] == "matching":
-                    for j, (key, correct_value) in enumerate(question["pairs"].items()):
-                        # Получаем ответ пользователя
-                        user_answer = answers.get(f"q{i}_{j}", "")  # i - индекс вопроса, j - индекс пары
-                        if user_answer == correct_value:
-                            score += 1  # Увеличиваем балл, если ответ правильный
-                        else:
-                            incorrect_answers.append({
-                                "question": f"Сопоставьте: {key}",
-                                "your_answer": user_answer or "Не выбрано",
-                                "correct_answer": correct_value
-                            })
-
-                feedback.append({
-                    "question": question["question"],
-                    "correct": ", ".join([f"{k} → {v}" for k, v in question["correct"].items()]),
-                    "explanation": "Правильное сопоставление всех пар."
-                })
+            if question["type"] == "matching":
+                for j, (key, correct_value) in enumerate(question["pairs"].items()):
+                    # Получаем ответ пользователя
+                    user_answer = answers.get(f"q{i}_{j}", "")  # i - индекс вопроса, j - индекс пары
+                    if user_answer == correct_value:
+                        score += 1  # Увеличиваем балл, если ответ правильный
+                    else:
+                        incorrect_answers.append({
+                            "question": f"Сопоставьте: {key}",
+                            "your_answer": user_answer or "Не выбрано",
+                            "correct_answer": correct_value
+                        })
 
         # Логирование результатов
         logging.info(
@@ -423,11 +417,11 @@ def submit():
 
         return render_template(
             "result.html",
-            user_data=user_data,  # Имя пользователя
-            score=score,          # Итоговый балл
-            total=len(questions), # Общее количество вопросов
-            incorrect_answers=incorrect_answers,  # Список неправильных ответов
-            feedback=feedback     # Список обратной связи
+            user_data=user_data,
+            score=score,
+            total=len(questions),
+            incorrect_answers=incorrect_answers,
+            feedback=feedback
         )
     except Exception as e:
         print(f"Ошибка на маршруте /submit: {e}")
